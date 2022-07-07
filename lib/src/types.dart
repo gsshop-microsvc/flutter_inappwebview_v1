@@ -6388,20 +6388,25 @@ class URLRequest {
   ///**NOTE**: available only on iOS.
   Uri? iosMainDocumentURL;
 
-  URLRequest(
-      {required this.url,
-      this.method,
-      this.headers,
-      this.body,
-      this.iosAllowsCellularAccess,
-      this.iosAllowsConstrainedNetworkAccess,
-      this.iosAllowsExpensiveNetworkAccess,
-      this.iosCachePolicy,
-      this.iosHttpShouldHandleCookies,
-      this.iosHttpShouldUsePipelining,
-      this.iosNetworkServiceType,
-      this.iosTimeoutInterval,
-      this.iosMainDocumentURL});
+  ///The URL of the request because some url Parsing error
+  String? urlString;
+
+  URLRequest({
+    required this.url,
+    this.method,
+    this.headers,
+    this.body,
+    this.iosAllowsCellularAccess,
+    this.iosAllowsConstrainedNetworkAccess,
+    this.iosAllowsExpensiveNetworkAccess,
+    this.iosCachePolicy,
+    this.iosHttpShouldHandleCookies,
+    this.iosHttpShouldUsePipelining,
+    this.iosNetworkServiceType,
+    this.iosTimeoutInterval,
+    this.iosMainDocumentURL,
+    this.urlString,
+  });
 
   static URLRequest? fromMap(Map<String, dynamic>? map) {
     if (map == null) {
@@ -6425,6 +6430,7 @@ class URLRequest {
       iosMainDocumentURL: map["iosMainDocumentURL"] != null
           ? Uri.parse(map["iosMainDocumentURL"])
           : null,
+      urlString: map["url"],
     );
   }
 
