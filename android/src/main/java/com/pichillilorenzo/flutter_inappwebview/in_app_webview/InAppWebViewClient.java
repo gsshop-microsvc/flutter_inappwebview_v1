@@ -73,7 +73,8 @@ public class InAppWebViewClient extends WebViewClient {
 
       boolean isForMainFrame = request.isForMainFrame();
         if (request.getUrl().toString().contains("/cu/kmc_confirm") 
-        || request.getUrl().toString().contains("kbpay_mo_callback")) {
+        || request.getUrl().toString().contains("kbpay_mo_callback")
+        || request.getUrl().toString().contains("/pa/easy_total_pay_auth_callback")) {
           isForMainFrame = false;
       }
 
@@ -100,8 +101,9 @@ public class InAppWebViewClient extends WebViewClient {
         // There isn't any way to load an URL for a frame that is not the main frame,
         // so if the request is not for the main frame, the navigation is allowed.
         // return request.isForMainFrame();
-        if (request.getUrl().toString().contains("kmc_confirm") 
-        || request.getUrl().toString().contains("kbpay_mo_callback")) {
+        if (request.getUrl().toString().contains("/cu/kmc_confirm") 
+        || request.getUrl().toString().contains("kbpay_mo_callback")
+        || request.getUrl().toString().contains("/pa/easy_total_pay_auth_callback")) {
           return false;
         }
         return true;
