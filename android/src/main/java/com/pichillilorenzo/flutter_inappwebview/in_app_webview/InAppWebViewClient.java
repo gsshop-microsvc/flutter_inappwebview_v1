@@ -74,7 +74,8 @@ public class InAppWebViewClient extends WebViewClient {
       boolean isForMainFrame = request.isForMainFrame();
         if (request.getUrl().toString().contains("/cu/kmc_confirm") 
         || request.getUrl().toString().contains("kbpay_mo_callback")
-        || request.getUrl().toString().contains("/pa/easy_total_pay_auth_callback")) {
+        || request.getUrl().toString().contains("/pa/easy_total_pay_auth_callback")
+        || request.getUrl().toString().contains("/pa/kbpay_auth_callback")) {
           isForMainFrame = false;
       }
 
