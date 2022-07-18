@@ -76,7 +76,8 @@ public class InAppWebViewClient extends WebViewClient {
         || request.getUrl().toString().contains("kbpay_mo_callback")
         || request.getUrl().toString().contains("/pa/easy_total_pay_auth_callback")
         || request.getUrl().toString().contains("/pa/kbpay_auth_callback")
-        || request.getUrl().toString().contains("/resultKbpayAuth.do")) {
+        || request.getUrl().toString().contains("/resultKbpayAuth.do")
+        || request.getUrl().toString().contains("/pa/comm_auth_pop_callback")) {
           isForMainFrame = false;
       }
 
@@ -107,7 +108,8 @@ public class InAppWebViewClient extends WebViewClient {
         || request.getUrl().toString().contains("kbpay_mo_callback")
         || request.getUrl().toString().contains("/pa/easy_total_pay_auth_callback")
         || request.getUrl().toString().contains("/pa/kbpay_auth_callback")
-        || request.getUrl().toString().contains("/resultKbpayAuth.do")) {
+        || request.getUrl().toString().contains("/resultKbpayAuth.do")
+        || request.getUrl().toString().contains("/pa/comm_auth_pop_callback")) {
           return false;
         }
         return true;
