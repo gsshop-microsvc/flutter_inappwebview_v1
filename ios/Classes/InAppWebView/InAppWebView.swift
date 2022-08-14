@@ -432,10 +432,15 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
             // This is a limitation of the official WebKit API.
             return
         }
-        let controller = WKUserContentController()
-        AirBridge.webInterface()?.inject(to: controller, withWebToken: "47fd654c160742b6978120f6c77282d2")
-        configuration.userContentController = controller
-        configuration.userContentController.initialize()
+        do {
+            let controller = WKUserContentController()
+            configuration.userContentController = controller
+            configuration.userContentController.initialize()
+
+            AirBridge.webInterface()?.inject(to: configuration.userContentController, withWebToken: "47fd654c160742b6978120f6c77282d2")
+        } catch {
+            print("[keykat] \(error)")
+        }
         
         if let applePayAPIEnabled = options?.applePayAPIEnabled, applePayAPIEnabled {
             return
