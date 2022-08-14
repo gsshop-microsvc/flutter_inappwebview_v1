@@ -437,6 +437,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
             configuration.userContentController = controller
             configuration.userContentController.initialize()
             print("[keykat] AirBridge.webInterface is nil? \(AirBridge.webInterface == nil)")
+            print("[keykat] AirBridge Hash in inappwebview: \(AirBridge.hash())")
             AirBridge.webInterface()?.inject(to: configuration.userContentController, withWebToken: "47fd654c160742b6978120f6c77282d2")
             print("[keykat] AirBridge webInterface: success")
         } catch {
