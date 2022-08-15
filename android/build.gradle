@@ -5,7 +5,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://sdk-download.airbridge.io/maven" }
     }
 
     dependencies {
@@ -17,6 +16,7 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://sdk-download.airbridge.io/maven" }
     }
 }
 

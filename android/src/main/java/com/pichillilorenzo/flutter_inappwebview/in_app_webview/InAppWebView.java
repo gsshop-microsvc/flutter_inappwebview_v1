@@ -102,6 +102,8 @@ import okhttp3.OkHttpClient;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.pichillilorenzo.flutter_inappwebview.types.PreferredContentModeOptionType.fromValue;
 
+import co.ab180.airbridge.Airbridge;
+
 final public class InAppWebView extends InputAwareWebView implements InAppWebViewInterface {
 
   static final String LOG_TAG = "InAppWebView";
@@ -152,14 +154,23 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
 
   public InAppWebView(Context context) {
     super(context);
+
+    Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2"); 
+    System.out.println("[keykat] AirBridge init success");
   }
 
   public InAppWebView(Context context, AttributeSet attrs) {
     super(context, attrs);
+
+    Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2"); 
+    System.out.println("[keykat] AirBridge init success");
   }
 
   public InAppWebView(Context context, AttributeSet attrs, int defaultStyle) {
     super(context, attrs, defaultStyle);
+
+    Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2"); 
+    System.out.println("[keykat] AirBridge init success");
   }
 
   public InAppWebView(Context context, InAppWebViewFlutterPlugin plugin,
@@ -178,6 +189,9 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
     if (plugin != null && plugin.activity != null) {
       plugin.activity.registerForContextMenu(this);
     }
+
+    Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2"); 
+    System.out.println("[keykat] AirBridge init success");
   }
 
   public void prepare() {
