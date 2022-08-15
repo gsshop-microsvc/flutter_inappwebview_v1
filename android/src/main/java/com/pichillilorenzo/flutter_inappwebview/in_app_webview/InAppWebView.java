@@ -156,21 +156,21 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
     super(context);
 
     Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2"); 
-    System.out.println("[keykat] AirBridge init success");
+    System.out.println("[keykat] AirBridge hash in inappwebview: " + Airbridge.hashCode());
   }
 
   public InAppWebView(Context context, AttributeSet attrs) {
     super(context, attrs);
 
     Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2"); 
-    System.out.println("[keykat] AirBridge init success");
+    System.out.println("[keykat] AirBridge hash in inappwebview: " + Airbridge.hashCode());
   }
 
   public InAppWebView(Context context, AttributeSet attrs, int defaultStyle) {
     super(context, attrs, defaultStyle);
 
     Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2"); 
-    System.out.println("[keykat] AirBridge init success");
+    System.out.println("[keykat] AirBridge hash in inappwebview: " + Airbridge.hashCode());
   }
 
   public InAppWebView(Context context, InAppWebViewFlutterPlugin plugin,
