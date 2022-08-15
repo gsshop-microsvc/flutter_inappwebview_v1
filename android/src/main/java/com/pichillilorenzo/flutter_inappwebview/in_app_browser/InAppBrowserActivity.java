@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.flutter.plugin.common.MethodChannel;
+import co.ab180.airbridge.Airbridge;
 
 public class InAppBrowserActivity extends AppCompatActivity implements InAppBrowserDelegate {
 
@@ -107,6 +108,8 @@ public class InAppBrowserActivity extends AppCompatActivity implements InAppBrow
     webView.inAppBrowserDelegate = this;
     webView.channel = channel;
     webView.plugin = manager.plugin;
+
+    Airbridge.setJavascriptInterface(webView, "47fd654c160742b6978120f6c77282d2"); 
 
     methodCallDelegate = new InAppWebViewMethodHandler(webView);
     channel.setMethodCallHandler(methodCallDelegate);

@@ -5,6 +5,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://sdk-download.airbridge.io/maven" }
     }
 
     dependencies {
@@ -50,5 +51,6 @@ android {
         implementation 'androidx.appcompat:appcompat:1.4.1'
         implementation 'com.squareup.okhttp3:okhttp:3.14.9'
         implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+        implementation "io.airbridge:sdk-android:2.+"
     }
 }
