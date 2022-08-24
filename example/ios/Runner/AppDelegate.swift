@@ -13,8 +13,8 @@ import AirBridge
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
     //FlutterDownloaderPlugin.setPluginRegistrantCallback(registerPlugins)
-    AirBridge.getInstance("9c0aa1005eea4b64bcb18b86823d6ba7", appName:"gsfreshmall", withLaunchOptions:launchOptions)
-    print("[keykat] AirBridge Init")
+    // AirBridge.getInstance("9c0aa1005eea4b64bcb18b86823d6ba7", appName:"gsfreshmall", withLaunchOptions:launchOptions)
+    // print("[keykat] AirBridge Init")
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
