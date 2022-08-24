@@ -188,7 +188,6 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
     }
 
     Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2"); 
-    System.out.println("[keykat] AirBridge init success");
   }
 
   public void prepare() {
