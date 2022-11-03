@@ -56,6 +56,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.io.UnsupportedEncodingException;
 
 public class InAppWebViewClient extends WebViewClient {
 
@@ -98,7 +99,8 @@ public class InAppWebViewClient extends WebViewClient {
       } else {
         // There isn't any way to load an URL for a frame that is not the main frame,
         // so if the request is not for the main frame, the navigation is allowed.
-        return request.isForMainFrame();
+        // return request.isForMainFrame();
+        return true;
       }
     }
     return false;
@@ -126,7 +128,38 @@ public class InAppWebViewClient extends WebViewClient {
   }
   public void onShouldOverrideUrlLoading(final InAppWebView webView, final String url, final String method, final Map<String, String> headers,
                                          final boolean isForMainFrame, boolean hasGesture, boolean isRedirect) {
-    URLRequest request = new URLRequest(url, method, null, headers);
+    String encodedIntentUrl = null;
+    if (url.startsWith("intent://")) {
+      String temp = url.substring(9);
+      try {
+        // when intent data string has
+        temp = java.net.URLEncoder.encode(temp, "utf-8");
+        encodedIntentUrl = "intent://" + temp;
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }
+    } else if (url.startsWith("intent:")) {
+      String temp = url.substring(7);
+      try {
+        // when intent data string has
+        temp = java.net.URLEncoder.encode(temp, "utf-8");
+        encodedIntentUrl = "intent:" + temp;
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }
+    } else if (url.startsWith("v3mobileplusweb://")) {
+      String temp = url.substring(18);
+      try {
+        // when intent data string has
+        temp = java.net.URLEncoder.encode(temp, "utf-8");
+        encodedIntentUrl = "v3mobileplusweb://" + temp;
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();
+      }
+    }
+
+    final String navigationUrl = (encodedIntentUrl != null) ? encodedIntentUrl : url;
+    URLRequest request = new URLRequest(navigationUrl, method, null, headers);
     NavigationAction navigationAction = new NavigationAction(
             request,
             isForMainFrame,
