@@ -100,12 +100,7 @@
 			children = (
 				61FF730123634DD10069C557 /* flutter_downloader.framework */,
 				61FF72FF23634CA10069C557 /* libsqlite3.tbd */,
-<<<<<<< HEAD
-				B0FC2CF7A6002799890B3102 /* Pods_Runner.framework */,
-				6143FF36290959650014A1FC /* UniformTypeIdentifiers.framework */,
-=======
 				CE7CA0FE516EC13090B26DBA /* libPods-Runner.a */,
->>>>>>> d25708af749aaad1384c32e0ac7e3e3946bbe9a8
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
