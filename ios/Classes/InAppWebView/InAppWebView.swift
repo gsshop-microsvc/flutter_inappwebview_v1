@@ -8,6 +8,7 @@
 import Flutter
 import Foundation
 import WebKit
+import AirBridge
 
 public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
                             WKNavigationDelegate, WKScriptMessageHandler, UIGestureRecognizerDelegate,
@@ -482,8 +483,14 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate,
             // This is a limitation of the official WebKit API.
             return
         }
-        configuration.userContentController = WKUserContentController()
-        configuration.userContentController.initialize()
+        do {
+            let controller = WKUserContentController()
+            configuration.userContentController = controller
+            configuration.userContentController.initialize()
+            AirBridge.webInterface()?.inject(to: configuration.userContentController, withWebToken: "47fd654c160742b6978120f6c77282d2")
+        } catch {
+            print("[keykat] \(error)")
+        }
         
         if let applePayAPIEnabled = settings?.applePayAPIEnabled, applePayAPIEnabled {
             return

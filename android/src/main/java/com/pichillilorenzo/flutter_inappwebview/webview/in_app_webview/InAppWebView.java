@@ -110,6 +110,8 @@ import java.util.regex.Pattern;
 
 import io.flutter.plugin.common.MethodChannel;
 
+import co.ab180.airbridge.Airbridge;
+
 final public class InAppWebView extends InputAwareWebView implements InAppWebViewInterface {
   protected static final String LOG_TAG = "InAppWebView";
   public static final String METHOD_CHANNEL_NAME_PREFIX = "com.pichillilorenzo/flutter_inappwebview_";
@@ -171,14 +173,20 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
 
   public InAppWebView(Context context) {
     super(context);
+
+    Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2");
   }
 
   public InAppWebView(Context context, AttributeSet attrs) {
     super(context, attrs);
+
+    Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2");
   }
 
   public InAppWebView(Context context, AttributeSet attrs, int defaultStyle) {
     super(context, attrs, defaultStyle);
+
+    Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2");
   }
 
   public InAppWebView(Context context, @NonNull InAppWebViewFlutterPlugin plugin,
@@ -197,6 +205,8 @@ final public class InAppWebView extends InputAwareWebView implements InAppWebVie
     if (plugin != null && plugin.activity != null) {
       plugin.activity.registerForContextMenu(this);
     }
+
+    Airbridge.setJavascriptInterface(this, "47fd654c160742b6978120f6c77282d2"); 
   }
 
   @SuppressLint("RestrictedApi")
