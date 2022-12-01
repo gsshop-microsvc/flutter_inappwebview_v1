@@ -127,7 +127,7 @@ public class InAppWebViewClient extends WebViewClient {
         // when intent data string has
         temp = java.net.URLEncoder.encode(temp, "utf-8");
         encodedIntentUrl = "intent://" + temp;
-      } catch (UnsupportedEncodingException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     } else if (url.startsWith("intent:")) {
@@ -136,7 +136,7 @@ public class InAppWebViewClient extends WebViewClient {
         // when intent data string has
         temp = java.net.URLEncoder.encode(temp, "utf-8");
         encodedIntentUrl = "intent:" + temp;
-      } catch (UnsupportedEncodingException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     } else if (url.startsWith("v3mobileplusweb://")) {
@@ -145,7 +145,7 @@ public class InAppWebViewClient extends WebViewClient {
         // when intent data string has
         temp = java.net.URLEncoder.encode(temp, "utf-8");
         encodedIntentUrl = "v3mobileplusweb://" + temp;
-      } catch (UnsupportedEncodingException e) {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
