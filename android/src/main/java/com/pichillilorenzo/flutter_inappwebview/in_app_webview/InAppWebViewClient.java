@@ -153,8 +153,7 @@ public class InAppWebViewClient extends WebViewClient {
     }
 
     final String navigationUrl = (encodedIntentUrl != null) ? encodedIntentUrl : url;
-    
-    URLRequest request = new URLRequest(url, method, null, headers);
+    URLRequest request = new URLRequest(navigationUrl, method, null, headers);
     NavigationAction navigationAction = new NavigationAction(
             request,
             isForMainFrame,
