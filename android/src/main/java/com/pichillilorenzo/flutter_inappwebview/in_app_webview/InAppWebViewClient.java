@@ -49,6 +49,8 @@ import java.util.regex.Matcher;
 
 import io.flutter.plugin.common.MethodChannel;
 
+import java.io.UnsupportedEncodingException;
+
 public class InAppWebViewClient extends WebViewClient {
 
   protected static final String LOG_TAG = "IAWebViewClient";
@@ -127,7 +129,7 @@ public class InAppWebViewClient extends WebViewClient {
         // when intent data string has
         temp = java.net.URLEncoder.encode(temp, "utf-8");
         encodedIntentUrl = "intent://" + temp;
-      } catch (Exception e) {
+      } catch (UnsupportedEncodingException e) {
         e.printStackTrace();
       }
     } else if (url.startsWith("intent:")) {
@@ -136,7 +138,7 @@ public class InAppWebViewClient extends WebViewClient {
         // when intent data string has
         temp = java.net.URLEncoder.encode(temp, "utf-8");
         encodedIntentUrl = "intent:" + temp;
-      } catch (Exception e) {
+      } catch (UnsupportedEncodingException e) {
         e.printStackTrace();
       }
     } else if (url.startsWith("v3mobileplusweb://")) {
@@ -145,7 +147,7 @@ public class InAppWebViewClient extends WebViewClient {
         // when intent data string has
         temp = java.net.URLEncoder.encode(temp, "utf-8");
         encodedIntentUrl = "v3mobileplusweb://" + temp;
-      } catch (Exception e) {
+      } catch (UnsupportedEncodingException e) {
         e.printStackTrace();
       }
     }
