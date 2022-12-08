@@ -119,7 +119,7 @@ public class InAppWebViewClient extends WebViewClient {
         || request.getUrl().toString().contains("/pa/comm_auth_pop_callback")) {
           return false;
         }
-        return true;
+        return false;
       }
     }
     return false;
