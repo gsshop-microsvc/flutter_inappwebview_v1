@@ -29,10 +29,11 @@ Migrating from version `5.x.x` is easy! Follow the online [Migration guide](http
 
 ## Articles/Resources
 
-- [Official documentation: inappwebview.dev/docs](https://inappwebview.dev/docs/)
+- [Official documentation: inappwebview.dev/docs](https://inappwebview.dev/docs/intro)
 - Read the online [API Reference](https://pub.dartlang.org/documentation/flutter_inappwebview/latest/) to get the **full API documentation**.
 - [Official blog: inappwebview.dev/blog](https://inappwebview.dev/blog/)
 - Find open source projects on the [Official Showcase page: inappwebview.dev/showcase](https://inappwebview.dev/showcase/)
+- Check the [flutter_inappwebview_examples](https://github.com/pichillilorenzo/flutter_inappwebview_examples) repository for project examples
 - Check the [example/integration_test/webview_flutter_test.dart](https://github.com/pichillilorenzo/flutter_inappwebview/blob/master/example/integration_test/webview_flutter_test.dart) file for other code examples
 - [Flutter Browser App](https://github.com/pichillilorenzo/flutter_browser_app): A Full-Featured Mobile Browser App (such as the Google Chrome mobile browser) created using Flutter and the features offered by the flutter_inappwebview plugin
 
@@ -47,7 +48,7 @@ Send a submission request to the [Submit App](https://inappwebview.dev/submit-ap
 ## Requirements
 
 - Dart sdk: ">=2.14.0 <3.0.0"
-- Flutter: ">=2.5.0"
+- Flutter: ">=3.0.0"
 - Android: `minSdkVersion 17` and add support for `androidx` (see [AndroidX Migration](https://flutter.dev/docs/development/androidx-migration) to migrate an existing app)
 - iOS: `--ios-language swift`, Xcode version `>= 14`
 
@@ -57,15 +58,15 @@ Add `flutter_inappwebview` as a [dependency in your pubspec.yaml file](https://f
 
 ## Main Classes Overview
 
-* [InAppWebView](https://inappwebview.dev/docs/in-app-webview/basic-usage/): Flutter Widget for adding an inline native WebView integrated into the flutter widget tree.
-* [ContextMenu](https://inappwebview.dev/docs/context-menu/basic-usage/): This class represents the WebView context menu.
-* [HeadlessInAppWebView](https://inappwebview.dev/docs/headless-in-app-webview/basic-usage/): Class that represents a WebView in headless mode. It can be used to run a WebView in background without attaching an InAppWebView to the widget tree.
-* [InAppBrowser](https://inappwebview.dev/docs/in-app-browser/basic-usage/): In-App Browser using native WebView.
-* [ChromeSafariBrowser](https://inappwebview.dev/docs/chrome-safari-browser/basic-usage/): In-App Browser using Chrome Custom Tabs on Android / SFSafariViewController on iOS.
-* [InAppLocalhostServer](https://inappwebview.dev/docs/in-app-localhost-server/basic-usage/): This class allows you to create a simple server on http://localhost:[port]/. The default port value is 8080.
-* [CookieManager](https://inappwebview.dev/docs/cookie-manager/basic-usage/): This class implements a singleton object (shared instance) which manages the cookies used by WebView instances.
-* [HttpAuthCredentialDatabase](https://inappwebview.dev/docs/http-auth-credential-database/basic-usage/): This class implements a singleton object (shared instance) that manages the shared HTTP auth credentials cache.
-* [WebStorageManager](https://inappwebview.dev/docs/web-storage-manager/basic-usage/): This class implements a singleton object (shared instance) which manages the web storage used by WebView instances.
+* [InAppWebView](https://inappwebview.dev/docs/5.x.x/webview/in-app-webview): Flutter Widget for adding an inline native WebView integrated into the flutter widget tree.
+* [ContextMenu](https://inappwebview.dev/docs/5.x.x/webview/context-menu): This class represents the WebView context menu.
+* [HeadlessInAppWebView](https://inappwebview.dev/docs/5.x.x/webview/headless-in-app-webview): Class that represents a WebView in headless mode. It can be used to run a WebView in background without attaching an InAppWebView to the widget tree.
+* [InAppBrowser](https://inappwebview.dev/docs/5.x.x/in-app-browsers/in-app-browser): In-App Browser using native WebView.
+* [ChromeSafariBrowser](https://inappwebview.dev/docs/5.x.x/in-app-browsers/chrome-safari-browser): In-App Browser using Chrome Custom Tabs on Android / SFSafariViewController on iOS.
+* [InAppLocalhostServer](https://inappwebview.dev/docs/5.x.x/in-app-localhost-server): This class allows you to create a simple server on http://localhost:[port]/. The default port value is 8080.
+* [CookieManager](https://inappwebview.dev/docs/5.x.x/cookie-manager): This class implements a singleton object (shared instance) which manages the cookies used by WebView instances.
+* [HttpAuthCredentialDatabase](https://inappwebview.dev/docs/5.x.x/http-auth-credential-database): This class implements a singleton object (shared instance) that manages the shared HTTP auth credentials cache.
+* [WebStorageManager](https://inappwebview.dev/docs/5.x.x/web-storage-manager): This class implements a singleton object (shared instance) which manages the web storage used by WebView instances.
 
 ## Support
 

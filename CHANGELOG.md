@@ -1,3 +1,45 @@
+## 5.8.0
+
+- Merged "fix: xcode 15 related bug" [#1790](https://github.com/pichillilorenzo/flutter_inappwebview/pull/1790) (thanks to [nesquikm](https://github.com/nesquikm))
+
+## 5.7.2+3
+
+- Fixed "Xiaomi store - Conflict of Privacy Permissions, android.permission.MY_READ_INSTALLED_PACKAGES" [#1462](https://github.com/pichillilorenzo/flutter_inappwebview/issues/1462)
+
+## 5.7.2+2
+
+- Fixed "Unexpected addWebMessageListener behaviour" [#1422](https://github.com/pichillilorenzo/flutter_inappwebview/issues/1422)
+
+## 5.7.2+1
+
+- Fixed "Cannot Grant Permission at Android 21" [#1447](https://github.com/pichillilorenzo/flutter_inappwebview/issues/1447)
+
+## 5.7.2
+
+- Removed Android Hybrid Composition constraint to use the pull-to-refresh feature
+
+## 5.7.1+2
+
+- Fixed Android `NullPointerException` on `InAppBrowserActivity.dispose`
+
+## 5.7.1+1
+
+- Fixed User Script remove methods
+- Fixed missing `break` statement on Android when parsing `ChromeCustomTabsOptions.displayMode` in Java code
+
+## 5.7.1
+
+- Exposed "shared" property of HttpServer bind method to support more use-cases. (thanks to [LugonjaAleksandar](https://github.com/LugonjaAleksandar))
+
+## 5.7.0
+
+- Added `PlatformViewsService.initExpensiveAndroidView` for Android
+
+### BREAKING CHANGES
+
+- Flutter minimum version `3.0.0`
+
+
 ## 5.6.0+2
 
 - Revert back the usage of `PlatformViewsService.initExpensiveAndroidView`
