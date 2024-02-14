@@ -64,7 +64,7 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         self.channel = channel
         self.contextMenu = contextMenu
         self.initialUserScripts = userScripts
-        self.inspectable = true
+        self.isInspectable = true
         uiDelegate = self
         navigationDelegate = self
         scrollView.delegate = self
@@ -477,11 +477,6 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
     
     public static func preWKWebViewConfiguration(options: InAppWebViewOptions?) -> WKWebViewConfiguration {
         let configuration = WKWebViewConfiguration()
-        
-        let jsContext = JSContext()
-        jsContext?.isInspectable = true
-
-        configuration.javaScriptContext?.isInspectable = true
         configuration.processPool = WKProcessPoolManager.sharedProcessPool
         
         if let options = options {
