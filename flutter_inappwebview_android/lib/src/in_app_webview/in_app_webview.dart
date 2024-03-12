@@ -279,6 +279,8 @@ class AndroidInAppWebViewWidget extends PlatformInAppWebViewWidget {
       params as AndroidInAppWebViewWidgetCreationParams;
 
   AndroidInAppWebViewController? _controller;
+  AppLifecycleState _appLifecycleState = AppLifecycleState.resumed;
+  String _persistedNativeWebViewId = DateTime.now().toString();
 
   AndroidHeadlessInAppWebView? get _androidHeadlessInAppWebView =>
       params.headlessWebView as AndroidHeadlessInAppWebView?;
@@ -314,64 +316,73 @@ class AndroidInAppWebViewWidget extends PlatformInAppWebViewWidget {
             : params.initialOptions?.android.useHybridComposition) ??
         true;
 
-    return PlatformViewLink(
-      key: params.key,
-      viewType: 'com.pichillilorenzo/flutter_inappwebview',
-      surfaceFactory: (
-        BuildContext context,
-        PlatformViewController controller,
-      ) {
-        return AndroidViewSurface(
-          controller: controller as AndroidViewController,
-          gestureRecognizers: params.gestureRecognizers ??
-              const <Factory<OneSequenceGestureRecognizer>>{},
-          hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-        );
+    return _InAppWebViewWrapperWidget(
+      lifeCycleCallback: (state) {
+        _appLifecycleState = state;
       },
-      onCreatePlatformView: (PlatformViewCreationParams params) {
-        return _createAndroidViewController(
-          hybridComposition: useHybridComposition,
-          id: params.id,
-          viewType: 'com.pichillilorenzo/flutter_inappwebview',
-          layoutDirection: this.params.layoutDirection ??
-              Directionality.maybeOf(context) ??
-              TextDirection.rtl,
-          creationParams: <String, dynamic>{
-            'initialUrlRequest': this.params.initialUrlRequest?.toMap(),
-            'initialFile': this.params.initialFile,
-            'initialData': this.params.initialData?.toMap(),
-            'initialSettings': settingsMap,
-            'contextMenu': this.params.contextMenu?.toMap() ?? {},
-            'windowId': this.params.windowId,
-            'headlessWebViewId':
-                this.params.headlessWebView?.isRunning() ?? false
-                    ? this.params.headlessWebView?.id
-                    : null,
-            'initialUserScripts': this
-                    .params
-                    .initialUserScripts
-                    ?.map((e) => e.toMap())
-                    .toList() ??
-                [],
-            'pullToRefreshSettings': pullToRefreshSettings,
-            'keepAliveId': this.params.keepAlive?.id
-          },
-        )
-          ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-          ..addOnPlatformViewCreatedListener((id) => _onPlatformViewCreated(id))
-          ..create();
-      },
+      child: PlatformViewLink(
+        key: params.key,
+        viewType: 'com.pichillilorenzo/flutter_inappwebview',
+        surfaceFactory: (
+          BuildContext context,
+          PlatformViewController controller,
+        ) {
+          return AndroidViewSurface(
+            controller: controller as AndroidViewController,
+            gestureRecognizers: params.gestureRecognizers ??
+                const <Factory<OneSequenceGestureRecognizer>>{},
+            hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+          );
+        },
+        onCreatePlatformView: (PlatformViewCreationParams params) {
+          return _createAndroidViewController(
+            hybridComposition: useHybridComposition,
+            lifecycleState: _appLifecycleState,
+            id: params.id,
+            viewType: 'com.pichillilorenzo/flutter_inappwebview',
+            layoutDirection: this.params.layoutDirection ??
+                Directionality.maybeOf(context) ??
+                TextDirection.rtl,
+            creationParams: <String, dynamic>{
+              'initialUrlRequest': this.params.initialUrlRequest?.toMap(),
+              'initialFile': this.params.initialFile,
+              'initialData': this.params.initialData?.toMap(),
+              'initialSettings': settingsMap,
+              'contextMenu': this.params.contextMenu?.toMap() ?? {},
+              'windowId': this.params.windowId,
+              'persistedNativeWebViewId': this._persistedNativeWebViewId,
+              'headlessWebViewId':
+                  this.params.headlessWebView?.isRunning() ?? false
+                      ? this.params.headlessWebView?.id
+                      : null,
+              'initialUserScripts': this
+                      .params
+                      .initialUserScripts
+                      ?.map((e) => e.toMap())
+                      .toList() ??
+                  [],
+              'pullToRefreshSettings': pullToRefreshSettings,
+              'keepAliveId': this.params.keepAlive?.id
+            },
+          )
+            ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+            ..addOnPlatformViewCreatedListener(
+                (id) => _onPlatformViewCreated(id))
+            ..create();
+        },
+      ),
     );
   }
 
   AndroidViewController _createAndroidViewController({
     required bool hybridComposition,
     required int id,
+    required AppLifecycleState lifecycleState,
     required String viewType,
     required TextDirection layoutDirection,
     required Map<String, dynamic> creationParams,
   }) {
-    if (hybridComposition) {
+    if (hybridComposition && lifecycleState == AppLifecycleState.paused) {
       return PlatformViewsService.initExpensiveAndroidView(
         id: id,
         viewType: viewType,
@@ -471,5 +482,48 @@ class AndroidInAppWebViewWidget extends PlatformInAppWebViewWidget {
   T controllerFromPlatform<T>(PlatformInAppWebViewController controller) {
     // unused
     throw UnimplementedError();
+  }
+}
+
+class _InAppWebViewWrapperWidget extends StatefulWidget {
+  final Widget child;
+  final Function(AppLifecycleState state) lifeCycleCallback;
+
+  const _InAppWebViewWrapperWidget({
+    Key? key,
+    required this.child,
+    required this.lifeCycleCallback,
+  }) : super(key: key);
+
+  @override
+  State<_InAppWebViewWrapperWidget> createState() =>
+      __InAppWebViewWrapperWidgetState();
+}
+
+class __InAppWebViewWrapperWidgetState extends State<_InAppWebViewWrapperWidget>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    setState(() {
+      widget.lifeCycleCallback.call(state);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }
