@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
@@ -397,10 +398,8 @@ class _InAppWebViewState extends State<InAppWebView>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     setState(() {
-      setState(() {
-        _appLifecycleState = state;
-        _webViewKey = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toInt();
-      });
+      _appLifecycleState = state;
+      _webViewKey = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toInt();
     });
   }
 
