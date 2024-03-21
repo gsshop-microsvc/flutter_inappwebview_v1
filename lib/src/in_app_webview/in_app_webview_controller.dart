@@ -129,6 +129,12 @@ class InAppWebViewController {
         localStorage: LocalStorage(this), sessionStorage: SessionStorage(this));
   }
 
+  Future<void> removePersistedWebView(String webviewId) async {
+    var _subMethodChannel = MethodChannel(
+        'com.pichillilorenzo/flutter_inappwebview/sub/$webviewId');
+    await _subMethodChannel.invokeMethod('removePersistedWebView');
+  }
+
   Future<dynamic> handleMethod(MethodCall call) async {
     switch (call.method) {
       case "onLoadStart":
@@ -1208,7 +1214,7 @@ class InAppWebViewController {
   Future<void> loadUrl(
       {required URLRequest urlRequest,
       @Deprecated('Use `allowingReadAccessTo` instead')
-          Uri? iosAllowingReadAccessTo,
+      Uri? iosAllowingReadAccessTo,
       Uri? allowingReadAccessTo}) async {
     assert(urlRequest.url != null && urlRequest.url.toString().isNotEmpty);
     assert(iosAllowingReadAccessTo == null ||
@@ -1263,11 +1269,10 @@ class InAppWebViewController {
       String mimeType = "text/html",
       String encoding = "utf8",
       Uri? baseUrl,
-      @Deprecated('Use `historyUrl` instead')
-          Uri? androidHistoryUrl,
+      @Deprecated('Use `historyUrl` instead') Uri? androidHistoryUrl,
       Uri? historyUrl,
       @Deprecated('Use `allowingReadAccessTo` instead')
-          Uri? iosAllowingReadAccessTo,
+      Uri? iosAllowingReadAccessTo,
       Uri? allowingReadAccessTo}) async {
     assert(iosAllowingReadAccessTo == null ||
         iosAllowingReadAccessTo.isScheme("file"));

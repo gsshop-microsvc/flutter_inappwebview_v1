@@ -372,8 +372,37 @@ class InAppWebView extends StatefulWidget implements WebView {
       androidOnReceivedLoginRequest;
 }
 
-class _InAppWebViewState extends State<InAppWebView> {
+class _InAppWebViewState extends State<InAppWebView>
+    with WidgetsBindingObserver {
   late InAppWebViewController _controller;
+  String _webViewKey =  DateTime.now().millisecondsSinceEpoch.toString();
+  AppLifecycleState _appLifecycleState = AppLifecycleState.resumed;
+  String _persistedNativeWebViewId =
+      DateTime.now().millisecondsSinceEpoch.toString();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.removePersistedWebView(_persistedNativeWebViewId);
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    setState(() {
+      setState(() {
+        _appLifecycleState = state;
+        _webViewKey =  DateTime.now().millisecondsSinceEpoch.toString();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -382,6 +411,7 @@ class _InAppWebViewState extends State<InAppWebView> {
           widget.initialOptions?.android.useHybridComposition ?? false;
 
       return PlatformViewLink(
+        key: ValueKey(_webViewKey),
         viewType: 'com.pichillilorenzo/flutter_inappwebview',
         surfaceFactory: (
           BuildContext context,
@@ -398,6 +428,7 @@ class _InAppWebViewState extends State<InAppWebView> {
           return _createAndroidViewController(
               hybridComposition: useHybridComposition,
               id: params.id,
+              lifecycleState: _appLifecycleState,
               viewType: 'com.pichillilorenzo/flutter_inappwebview',
               layoutDirection:
                   Directionality.maybeOf(context) ?? TextDirection.rtl,
@@ -406,6 +437,7 @@ class _InAppWebViewState extends State<InAppWebView> {
                 'initialFile': widget.initialFile,
                 'initialData': widget.initialData?.toMap(),
                 'initialOptions': widget.initialOptions?.toMap() ?? {},
+                'persistedNativeWebViewId': this._persistedNativeWebViewId,
                 'contextMenu': widget.contextMenu?.toMap() ?? {},
                 'windowId': widget.windowId,
                 'implementation': widget.implementation.toValue(),
@@ -453,19 +485,15 @@ class _InAppWebViewState extends State<InAppWebView> {
     super.didUpdateWidget(oldWidget);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   AndroidViewController _createAndroidViewController({
     required bool hybridComposition,
     required int id,
     required String viewType,
+    required AppLifecycleState lifecycleState,
     required TextDirection layoutDirection,
     required Map<String, dynamic> creationParams,
   }) {
-    if (hybridComposition) {
+    if (hybridComposition && lifecycleState == AppLifecycleState.paused) {
       return PlatformViewsService.initExpensiveAndroidView(
         id: id,
         viewType: viewType,
