@@ -427,7 +427,7 @@ class _InAppWebViewState extends State<InAppWebView>
         onCreatePlatformView: (PlatformViewCreationParams params) {
           return _createAndroidViewController(
               hybridComposition: useHybridComposition,
-              id: _webViewKey,
+              id: params.id,
               lifecycleState: _appLifecycleState,
               viewType: 'com.pichillilorenzo/flutter_inappwebview',
               layoutDirection:
