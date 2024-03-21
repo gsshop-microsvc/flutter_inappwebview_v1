@@ -43,8 +43,8 @@ public class FlutterWebView implements PlatformWebView {
   static HashMap<String, Boolean> makeInitialMap = new HashMap<>();
 
   public InAppWebView webView;
-  public final MethodChannel channel;
-  public final MethodChannel subChannel;
+  public MethodChannel channel;
+  public MethodChannel subChannel;
   public InAppWebViewMethodHandler methodCallDelegate;
   String persistedNativeWebViewId;
   //  public PullToRefreshLayout pullToRefreshLayout;
@@ -52,21 +52,13 @@ public class FlutterWebView implements PlatformWebView {
 
   public FlutterWebView(final InAppWebViewFlutterPlugin plugin, final Context context, Object id,
                         HashMap<String, Object> params) {
-    channel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_" + id);
-
-    DisplayListenerProxy displayListenerProxy = new DisplayListenerProxy();
-    DisplayManager displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
-    displayListenerProxy.onPreWebViewInitialization(displayManager);
-    
-    Map<String, Object> initialOptions = (Map<String, Object>) params.get("initialOptions");
-    Map<String, Object> contextMenu = (Map<String, Object>) params.get("contextMenu");
-    Integer windowId = (Integer) params.get("windowId");
-    List<Map<String, Object>> initialUserScripts = (List<Map<String, Object>>) params.get("initialUserScripts");
-    Map<String, Object> pullToRefreshInitialOptions = (Map<String, Object>) params.get("pullToRefreshOptions");
     persistedNativeWebViewId = (String) params.get("persistedNativeWebViewId");
+    if (inAppWebViewMap.containsKey(persistedNativeWebViewId)
+      || pullToRefreshLayoutMap.containsKey(persistedNativeWebViewId)) {
+      return;
+    }
 
     subChannel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview/sub/" + persistedNativeWebViewId);
-
     subChannel.setMethodCallHandler(
       new MethodChannel.MethodCallHandler() {
         @Override
@@ -83,6 +75,19 @@ public class FlutterWebView implements PlatformWebView {
       }
     );
 
+    channel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_" + id);
+
+    DisplayListenerProxy displayListenerProxy = new DisplayListenerProxy();
+    DisplayManager displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+    displayListenerProxy.onPreWebViewInitialization(displayManager);
+    
+    Map<String, Object> initialOptions = (Map<String, Object>) params.get("initialOptions");
+    Map<String, Object> contextMenu = (Map<String, Object>) params.get("contextMenu");
+    Integer windowId = (Integer) params.get("windowId");
+    System.out.println("[keykat] windowId:: " + windowId + "   id:: " + id);
+    List<Map<String, Object>> initialUserScripts = (List<Map<String, Object>>) params.get("initialUserScripts");
+    Map<String, Object> pullToRefreshInitialOptions = (Map<String, Object>) params.get("pullToRefreshOptions");
+
     InAppWebViewOptions options = new InAppWebViewOptions();
     options.parse(initialOptions);
 
@@ -92,12 +97,7 @@ public class FlutterWebView implements PlatformWebView {
         userScripts.add(UserScript.fromMap(initialUserScript));
       }
     }
-    
-     if (inAppWebViewMap.containsKey(persistedNativeWebViewId)
-             || pullToRefreshLayoutMap.containsKey(persistedNativeWebViewId)) {
-       return;
-     }
-
+  
     InAppWebView webView = new InAppWebView(context, plugin, channel, id, windowId, options, contextMenu, options.useHybridComposition ? null : plugin.flutterView, userScripts);
     this.webView = webView;
     displayListenerProxy.onPostWebViewInitialization(displayManager);
