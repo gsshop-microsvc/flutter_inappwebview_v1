@@ -375,7 +375,7 @@ class InAppWebView extends StatefulWidget implements WebView {
 class _InAppWebViewState extends State<InAppWebView>
     with WidgetsBindingObserver {
   late InAppWebViewController _controller;
-  String _webViewKey =  DateTime.now().millisecondsSinceEpoch.toString();
+  int _webViewKey = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toInt();
   AppLifecycleState _appLifecycleState = AppLifecycleState.resumed;
   String _persistedNativeWebViewId =
       DateTime.now().millisecondsSinceEpoch.toString();
@@ -399,7 +399,7 @@ class _InAppWebViewState extends State<InAppWebView>
     setState(() {
       setState(() {
         _appLifecycleState = state;
-        _webViewKey =  DateTime.now().millisecondsSinceEpoch.toString();
+        _webViewKey = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toInt();
       });
     });
   }
@@ -427,7 +427,7 @@ class _InAppWebViewState extends State<InAppWebView>
         onCreatePlatformView: (PlatformViewCreationParams params) {
           return _createAndroidViewController(
               hybridComposition: useHybridComposition,
-              id: params.id,
+              id: _webViewKey,
               lifecycleState: _appLifecycleState,
               viewType: 'com.pichillilorenzo/flutter_inappwebview',
               layoutDirection:
