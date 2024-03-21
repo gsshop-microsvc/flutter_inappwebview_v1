@@ -397,10 +397,11 @@ class _InAppWebViewState extends State<InAppWebView>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    setState(() {
+    if (_appLifecycleState != state) {
       _appLifecycleState = state;
       _webViewKey = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toInt();
-    });
+      setState(() {});
+    }
   }
 
   @override
@@ -493,6 +494,7 @@ class _InAppWebViewState extends State<InAppWebView>
     required Map<String, dynamic> creationParams,
   }) {
     if (hybridComposition && lifecycleState == AppLifecycleState.paused) {
+      log('[keykat] initExpensiveAndroidView : $id');
       return PlatformViewsService.initExpensiveAndroidView(
         id: id,
         viewType: viewType,
@@ -501,6 +503,8 @@ class _InAppWebViewState extends State<InAppWebView>
         creationParamsCodec: const StandardMessageCodec(),
       );
     }
+
+    log('[keykat] initSurfaceAndroidView : $id');
     return PlatformViewsService.initSurfaceAndroidView(
       id: id,
       viewType: viewType,
