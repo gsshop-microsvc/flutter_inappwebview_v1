@@ -64,6 +64,9 @@ public class InAppWebView: WKWebView, UIScrollViewDelegate, WKUIDelegate, WKNavi
         self.channel = channel
         self.contextMenu = contextMenu
         self.initialUserScripts = userScripts
+        if #available(iOS 16.4, *) {
+            self.isInspectable = true
+        }
         uiDelegate = self
         navigationDelegate = self
         scrollView.delegate = self
