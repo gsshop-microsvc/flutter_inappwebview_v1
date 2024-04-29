@@ -118,7 +118,7 @@ class _InAppWebViewExampleScreenState extends State<InAppWebViewExampleScreen> {
                   key: webViewKey,
                   // contextMenu: contextMenu,
                   initialUrlRequest:
-                      URLRequest(url: Uri.parse("https://github.com/flutter")),
+                      URLRequest(url: Uri.parse("https://m.gsshop.com")),
                   // initialFile: "assets/index.html",
                   initialUserScripts: UnmodifiableListView<UserScript>([]),
                   initialOptions: options,
