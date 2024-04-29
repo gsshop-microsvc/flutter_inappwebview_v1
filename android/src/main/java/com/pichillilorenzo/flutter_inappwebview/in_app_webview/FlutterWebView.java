@@ -144,10 +144,14 @@ public class FlutterWebView implements PlatformWebView {
         PullToRefreshLayout pullToRefreshLayout = pairsView.second;
 
         ViewGroup parentWebView = (ViewGroup)webView.getParent();
-        parentWebView.removeView(webView);
+        if (parentWebView != null) {
+            parentWebView.removeView(webView);
+        }
 
         ViewGroup parentPullToRefreshLayout = (ViewGroup)pullToRefreshLayout.getParent();
-        parentPullToRefreshLayout.removeView(pullToRefreshLayout);
+        if (parentPullToRefreshLayout != null) {
+            parentPullToRefreshLayout.removeView(pullToRefreshLayout);
+        }
 
         return pullToRefreshLayout != null ? pullToRefreshLayout : webView;
     }
