@@ -40,6 +40,7 @@ class WebViewManager {
     static Map<Integer, Pair<InAppWebView, PullToRefreshLayout>> persistedWebViewMap = new HashMap<>();
     static Map<Integer, Boolean> persistedWebViewInitialLoadedMap = new HashMap<>();
     static Map<Integer, MethodChannel> persistedMethodChannel = new HashMap<>();
+    static Map<Integer, MethodChannel> persistedSubMethodChannel = new HashMap<>();
 }
 
 public class FlutterWebView implements PlatformWebView {
@@ -56,8 +57,6 @@ public class FlutterWebView implements PlatformWebView {
 
     public FlutterWebView(final InAppWebViewFlutterPlugin plugin, final Context context, Object id,
                           HashMap<String, Object> params) {
-        MethodChannel channel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_" + id);
-
         DisplayListenerProxy displayListenerProxy = new DisplayListenerProxy();
         DisplayManager displayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
         displayListenerProxy.onPreWebViewInitialization(displayManager);
@@ -95,21 +94,20 @@ public class FlutterWebView implements PlatformWebView {
             }
         }
 
+        MethodChannel channel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_" + persistedId);
         MethodChannel subChannel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_sub_" + persistedId);
         InAppWebView webView = new InAppWebView(context, plugin, channel, persistedId, windowId, options, contextMenu, options.useHybridComposition ? null : plugin.flutterView, userScripts);
         PullToRefreshLayout pullToRefreshLayout = null;
         displayListenerProxy.onPostWebViewInitialization(displayManager);
 
-        if (options.useHybridComposition) {
-            // set MATCH_PARENT layout params to the WebView, otherwise it won't take all the available space!
-            webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            MethodChannel pullToRefreshLayoutChannel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_pull_to_refresh_" + persistedId);
-            PullToRefreshOptions pullToRefreshOptions = new PullToRefreshOptions();
-            pullToRefreshOptions.parse(pullToRefreshInitialOptions);
-            pullToRefreshLayout = new PullToRefreshLayout(context, pullToRefreshLayoutChannel, pullToRefreshOptions);
-            pullToRefreshLayout.addView(webView);
-            pullToRefreshLayout.prepare();
-        }
+        // set MATCH_PARENT layout params to the WebView, otherwise it won't take all the available space!
+        webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        MethodChannel pullToRefreshLayoutChannel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_pull_to_refresh_" + persistedId);
+        PullToRefreshOptions pullToRefreshOptions = new PullToRefreshOptions();
+        pullToRefreshOptions.parse(pullToRefreshInitialOptions);
+        pullToRefreshLayout = new PullToRefreshLayout(context, pullToRefreshLayoutChannel, pullToRefreshOptions);
+        pullToRefreshLayout.addView(webView);
+        pullToRefreshLayout.prepare();
 
         methodCallDelegate = new InAppWebViewMethodHandler(webView);
         channel.setMethodCallHandler(methodCallDelegate);
@@ -131,7 +129,8 @@ public class FlutterWebView implements PlatformWebView {
 
         if (persistedId != null) {
             WebViewManager.persistedWebViewMap.put(persistedId, new Pair<>(webView, pullToRefreshLayout));
-            WebViewManager.persistedMethodChannel.put(persistedId, subChannel);
+            WebViewManager.persistedMethodChannel.put(persistedId, channel);
+            WebViewManager.persistedSubMethodChannel.put(persistedId, subChannel);
             WebViewManager.persistedWebViewInitialLoadedMap.put(persistedId, false);
         }
     }
@@ -198,8 +197,10 @@ public class FlutterWebView implements PlatformWebView {
         final InAppWebView webView = pairsView.first;
         final PullToRefreshLayout pullToRefreshLayout = pairsView.second;
         MethodChannel channel = WebViewManager.persistedMethodChannel.get(persistedId);
+        MethodChannel subChannel = WebViewManager.persistedSubMethodChannel.get(persistedId);
 
         channel.setMethodCallHandler(null);
+        subChannel.setMethodCallHandler(null);
         if (methodCallDelegate != null) {
             methodCallDelegate.dispose();
             methodCallDelegate = null;
@@ -236,6 +237,7 @@ public class FlutterWebView implements PlatformWebView {
 
         WebViewManager.persistedWebViewMap.put(persistedId, null);
         WebViewManager.persistedMethodChannel.put(persistedId, null);
+        WebViewManager.persistedSubMethodChannel.put(persistedId, null);
     }
 
     @Override
