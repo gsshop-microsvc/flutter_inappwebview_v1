@@ -100,10 +100,10 @@ public class FlutterWebView implements PlatformWebView {
         webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         MethodChannel pullToRefreshLayoutChannel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_pull_to_refresh_" + persistedId);
         PullToRefreshOptions pullToRefreshOptions = new PullToRefreshOptions();
-        pullToRefreshOptions.parse(pullToRefreshInitialOptions);
-        pullToRefreshLayout = new PullToRefreshLayout(context, pullToRefreshLayoutChannel, pullToRefreshOptions);
-        pullToRefreshLayout.addView(webView);
-        pullToRefreshLayout.prepare();
+        // pullToRefreshOptions.parse(pullToRefreshInitialOptions);
+        // pullToRefreshLayout = new PullToRefreshLayout(context, pullToRefreshLayoutChannel, pullToRefreshOptions);
+        // pullToRefreshLayout.addView(webView);
+        // pullToRefreshLayout.prepare();
 
         methodCallDelegate = new InAppWebViewMethodHandler(webView);
         channel.setMethodCallHandler(methodCallDelegate);
