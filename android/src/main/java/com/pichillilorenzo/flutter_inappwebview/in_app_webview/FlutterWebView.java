@@ -80,19 +80,15 @@ public class FlutterWebView implements PlatformWebView {
             }
         }
 
-        if (persistedId != null) {
-            Pair<InAppWebView, PullToRefreshLayout> pairsView
-                    = WebViewManager.persistedWebViewMap.get(persistedId);
-            if (pairsView != null) {
-//                webView = pairsView.first;
-//                pullToRefreshLayout = pairsView.second;
-//                subChannel = WebViewManager.persistedMethodChannel.get(persistedId);
+        Pair<InAppWebView, PullToRefreshLayout> pairsView
+            = WebViewManager.persistedWebViewMap.get(persistedId);
+        
 
-                System.out.println("[keykat] not null");
-
-                return;
-            }
+        if (pairsView != null) {
+            System.out.println("[keykat] not null");
+            return;
         }
+        
 
         MethodChannel channel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_" + persistedId);
         MethodChannel subChannel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_sub_" + persistedId);
@@ -143,10 +139,10 @@ public class FlutterWebView implements PlatformWebView {
         InAppWebView webView = pairsView.first;
         PullToRefreshLayout pullToRefreshLayout = pairsView.second;
 
-        ViewGroup parentWebView = (ViewGroup)webView.getParent();
-        if (parentWebView != null) {
-            parentWebView.removeView(webView);
-        }
+        // ViewGroup parentWebView = (ViewGroup)webView.getParent();
+        // if (parentWebView != null) {
+        //     parentWebView.removeView(webView);
+        // }
 
         // ViewGroup parentPullToRefreshLayout = (ViewGroup)pullToRefreshLayout.getParent();
         // if (parentPullToRefreshLayout != null) {
