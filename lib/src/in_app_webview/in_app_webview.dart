@@ -396,13 +396,13 @@ class _InAppWebViewState extends State<InAppWebView>
       },
       onPause: () {
         log('[keykat] onPause');
+        _lifecycleState.value = true;
       },
       onDetach: () {
         log('[keykat] onDeatch');
       },
       onInactive: () {
         log('[keykat] onInactive');
-        _lifecycleState.value = true;
       },
     );
   }
