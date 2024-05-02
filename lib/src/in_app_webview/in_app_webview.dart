@@ -386,18 +386,18 @@ class _InAppWebViewState extends State<InAppWebView> {
   @override
   void initState() {
     super.initState();
-    print('[keykat] initState webview: $_persistedId');
+    log('[keykat] initState webview: $_persistedId');
     _lifecycleListener = AppLifecycleListener(
       onRestart: () {
         log('[keykat] onRestart');
-        // _lifecycleState.value = false;
+        _lifecycleState.value = false;
       },
       onHide: () {
         log('[keykat] onHide');
       },
       onPause: () {
         log('[keykat] onPause');
-        // _lifecycleState.value = true;
+        _lifecycleState.value = true;
       },
       onDetach: () {
         log('[keykat] onDeatch');
@@ -420,7 +420,7 @@ class _InAppWebViewState extends State<InAppWebView> {
 
   @override
   Widget build(BuildContext context) {
-    print('[keykat] build inappwebview: $_persistedId');
+    log('[keykat] build inappwebview: $_persistedId');
     if (defaultTargetPlatform == TargetPlatform.android) {
       var useHybridComposition =
           widget.initialOptions?.android.useHybridComposition ?? false;
@@ -433,7 +433,7 @@ class _InAppWebViewState extends State<InAppWebView> {
       return ValueListenableBuilder<bool>(
         valueListenable: _lifecycleState,
         builder: (context, state, child) => PlatformViewLink(
-          key: ValueKey('$state'),
+          key: ValueKey('${_persistedId}_$state'),
           viewType: 'com.pichillilorenzo/flutter_inappwebview',
           surfaceFactory: (
             BuildContext context,
@@ -504,7 +504,8 @@ class _InAppWebViewState extends State<InAppWebView> {
       creationParamsCodec: const StandardMessageCodec(),
     )
       ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-      ..addOnPlatformViewCreatedListener((id) => _onPlatformViewCreated(id))
+      ..addOnPlatformViewCreatedListener(
+          (id) => _onPlatformViewCreated(_persistedId))
       ..create();
   }
 
@@ -533,7 +534,8 @@ class _InAppWebViewState extends State<InAppWebView> {
       creationParamsCodec: const StandardMessageCodec(),
     )
       ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-      ..addOnPlatformViewCreatedListener((id) => _onPlatformViewCreated(id))
+      ..addOnPlatformViewCreatedListener(
+          (id) => _onPlatformViewCreated(_persistedId))
       ..create();
   }
 
