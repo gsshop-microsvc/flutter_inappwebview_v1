@@ -240,8 +240,6 @@ public class FlutterWebView implements PlatformWebView {
         WebViewManager.persistedWebViewInitialLoadedMap.put(persistedId, false);
         WebViewManager.persistedMethodChannel.put(persistedId, null);
         WebViewManager.persistedSubMethodChannel.put(persistedId, null);
-        webView = null;
-        pullToRefreshLayout = null;
         
         persistedId = null;
     }
