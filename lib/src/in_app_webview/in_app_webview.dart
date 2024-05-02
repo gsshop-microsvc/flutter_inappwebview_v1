@@ -386,18 +386,16 @@ class _InAppWebViewState extends State<InAppWebView> {
   @override
   void initState() {
     super.initState();
-    log('[keykat] initState webview: $_persistedId');
     _lifecycleListener = AppLifecycleListener(
       onRestart: () {
         log('[keykat] onRestart');
-        _lifecycleState.value = false;
+        _lifecycleState.value = !(_lifecycleState.value);
       },
       onHide: () {
         log('[keykat] onHide');
       },
       onPause: () {
         log('[keykat] onPause');
-        _lifecycleState.value = true;
       },
       onDetach: () {
         log('[keykat] onDeatch');
@@ -420,7 +418,6 @@ class _InAppWebViewState extends State<InAppWebView> {
 
   @override
   Widget build(BuildContext context) {
-    log('[keykat] build inappwebview: $_persistedId');
     if (defaultTargetPlatform == TargetPlatform.android) {
       var useHybridComposition =
           widget.initialOptions?.android.useHybridComposition ?? false;
@@ -431,28 +428,31 @@ class _InAppWebViewState extends State<InAppWebView> {
       }
 
       return ValueListenableBuilder<bool>(
-        valueListenable: _lifecycleState,
-        builder: (context, state, child) => PlatformViewLink(
-          key: ValueKey('${_persistedId}_$state'),
-          viewType: 'com.pichillilorenzo/flutter_inappwebview',
-          surfaceFactory: (
-            BuildContext context,
-            PlatformViewController controller,
-          ) {
-            return AndroidViewSurface(
-              controller: controller as AndroidViewController,
-              gestureRecognizers: widget.gestureRecognizers ??
-                  const <Factory<OneSequenceGestureRecognizer>>{},
-              hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+          valueListenable: _lifecycleState,
+          builder: (context, state, child) {
+            // log('[keykat] valueListenableBuilder: $_persistedId $state');
+            return PlatformViewLink(
+              key: ValueKey('${_persistedId}_$state'),
+              viewType: 'com.pichillilorenzo/flutter_inappwebview',
+              surfaceFactory: (
+                BuildContext context,
+                PlatformViewController controller,
+              ) {
+                return AndroidViewSurface(
+                  controller: controller as AndroidViewController,
+                  gestureRecognizers: widget.gestureRecognizers ??
+                      const <Factory<OneSequenceGestureRecognizer>>{},
+                  hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+                );
+              },
+              onCreatePlatformView: (PlatformViewCreationParams params) {
+                return _initSurfaceAndroidViewController(params);
+                // return _androidViewController = state
+                //     ? _initExpensiveAndroidViewController(params)
+                //     : _initSurfaceAndroidViewController(params);
+              },
             );
-          },
-          onCreatePlatformView: (PlatformViewCreationParams params) {
-            return _androidViewController = state
-                ? _initExpensiveAndroidViewController(params)
-                : _initSurfaceAndroidViewController(params);
-          },
-        ),
-      );
+          });
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
         viewType: 'com.pichillilorenzo/flutter_inappwebview',
