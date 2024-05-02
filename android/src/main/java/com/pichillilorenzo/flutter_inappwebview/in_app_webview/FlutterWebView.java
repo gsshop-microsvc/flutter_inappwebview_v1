@@ -52,7 +52,7 @@ public class FlutterWebView implements PlatformWebView {
 //    public MethodChannel subChannel;
     public InAppWebViewMethodHandler methodCallDelegate;
     Integer persistedId;
-//    public PullToRefreshLayout pullToRefreshLayout;
+    public PullToRefreshLayout pullToRefreshLayout;
 
 
     public FlutterWebView(final InAppWebViewFlutterPlugin plugin, final Context context, Object id,
@@ -95,7 +95,6 @@ public class FlutterWebView implements PlatformWebView {
         MethodChannel channel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_" + persistedId);
         MethodChannel subChannel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_sub_" + persistedId);
         InAppWebView webView = new InAppWebView(context, plugin, channel, persistedId, windowId, options, contextMenu, options.useHybridComposition ? null : plugin.flutterView, userScripts);
-        PullToRefreshLayout pullToRefreshLayout = null;
         displayListenerProxy.onPostWebViewInitialization(displayManager);
 
         if (options.useHybridComposition) { 
@@ -144,16 +143,6 @@ public class FlutterWebView implements PlatformWebView {
 
         InAppWebView webView = pairsView.first;
         PullToRefreshLayout pullToRefreshLayout = pairsView.second;
-
-        // ViewGroup parentWebView = (ViewGroup)webView.getParent();
-        // if (parentWebView != null) {
-        //     parentWebView.removeView(webView);
-        // }
-
-        // ViewGroup parentPullToRefreshLayout = (ViewGroup)pullToRefreshLayout.getParent();
-        // if (parentPullToRefreshLayout != null) {
-        //     parentPullToRefreshLayout.removeView(pullToRefreshLayout);
-        // }
 
         return pullToRefreshLayout != null ? pullToRefreshLayout : webView;
     }
@@ -248,8 +237,13 @@ public class FlutterWebView implements PlatformWebView {
         }
 
         WebViewManager.persistedWebViewMap.put(persistedId, null);
+        WebViewManager.persistedWebViewInitialLoadedMap.put(persistedId, false);
         WebViewManager.persistedMethodChannel.put(persistedId, null);
         WebViewManager.persistedSubMethodChannel.put(persistedId, null);
+        webView = null;
+        pullToRefreshLayout = null;
+        
+        persistedId = null;
     }
 
     @Override

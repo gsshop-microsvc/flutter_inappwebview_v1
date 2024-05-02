@@ -377,6 +377,7 @@ class _InAppWebViewState extends State<InAppWebView>
     with AutomaticKeepAliveClientMixin {
   late InAppWebViewController _controller;
   AndroidViewController? _androidViewController;
+  late MethodChannel _channel;
 
   int _persistedId = DateTime.now().millisecondsSinceEpoch % 100000;
   ValueNotifier<bool> _lifecycleState = ValueNotifier<bool>(false);
@@ -389,14 +390,14 @@ class _InAppWebViewState extends State<InAppWebView>
     _lifecycleListener = AppLifecycleListener(
       onRestart: () {
         log('[keykat] onRestart');
-        _lifecycleState.value = false;
+        // _lifecycleState.value = false;
       },
       onHide: () {
         log('[keykat] onHide');
       },
       onPause: () {
         log('[keykat] onPause');
-        _lifecycleState.value = true;
+        // _lifecycleState.value = true;
       },
       onDetach: () {
         log('[keykat] onDeatch');
@@ -405,12 +406,16 @@ class _InAppWebViewState extends State<InAppWebView>
         log('[keykat] onInactive');
       },
     );
+
+    _channel = MethodChannel(
+        'com.pichillilorenzo/flutter_inappwebview_sub_${_persistedId}');
   }
 
   @override
   dispose() {
     super.dispose();
     _lifecycleListener.dispose();
+    _channel.invokeMethod('persistedDispose');
   }
 
   @override
@@ -498,8 +503,7 @@ class _InAppWebViewState extends State<InAppWebView>
       creationParamsCodec: const StandardMessageCodec(),
     )
       ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-      ..addOnPlatformViewCreatedListener(
-          (id) => _onPlatformViewCreated(_persistedId))
+      ..addOnPlatformViewCreatedListener((id) => _onPlatformViewCreated(id))
       ..create();
   }
 
@@ -528,8 +532,7 @@ class _InAppWebViewState extends State<InAppWebView>
       creationParamsCodec: const StandardMessageCodec(),
     )
       ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-      ..addOnPlatformViewCreatedListener(
-          (id) => _onPlatformViewCreated(_persistedId))
+      ..addOnPlatformViewCreatedListener((id) => _onPlatformViewCreated(id))
       ..create();
   }
 
