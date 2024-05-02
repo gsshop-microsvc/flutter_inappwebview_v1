@@ -373,8 +373,7 @@ class InAppWebView extends StatefulWidget implements WebView {
       androidOnReceivedLoginRequest;
 }
 
-class _InAppWebViewState extends State<InAppWebView>
-    with AutomaticKeepAliveClientMixin {
+class _InAppWebViewState extends State<InAppWebView> {
   late InAppWebViewController _controller;
   AndroidViewController? _androidViewController;
   late MethodChannel _channel;
@@ -387,6 +386,7 @@ class _InAppWebViewState extends State<InAppWebView>
   @override
   void initState() {
     super.initState();
+    print('[keykat] initState webview: $_persistedId');
     _lifecycleListener = AppLifecycleListener(
       onRestart: () {
         log('[keykat] onRestart');
@@ -420,6 +420,7 @@ class _InAppWebViewState extends State<InAppWebView>
 
   @override
   Widget build(BuildContext context) {
+    print('[keykat] build inappwebview: $_persistedId');
     if (defaultTargetPlatform == TargetPlatform.android) {
       var useHybridComposition =
           widget.initialOptions?.android.useHybridComposition ?? false;
@@ -548,7 +549,4 @@ class _InAppWebViewState extends State<InAppWebView>
       widget.onWebViewCreated!(_controller);
     }
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

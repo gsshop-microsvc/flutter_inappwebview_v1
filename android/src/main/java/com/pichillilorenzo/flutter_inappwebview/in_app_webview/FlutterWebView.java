@@ -82,7 +82,6 @@ public class FlutterWebView implements PlatformWebView {
 
         Pair<InAppWebView, PullToRefreshLayout> pairsView
             = WebViewManager.persistedWebViewMap.get(persistedId);
-        
 
         if (pairsView != null) {
             System.out.println("[keykat] not null persistedId: " + persistedId);
@@ -94,7 +93,7 @@ public class FlutterWebView implements PlatformWebView {
             
         MethodChannel channel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_" + persistedId);
         MethodChannel subChannel = new MethodChannel(plugin.messenger, "com.pichillilorenzo/flutter_inappwebview_sub_" + persistedId);
-        InAppWebView webView = new InAppWebView(context, plugin, channel, persistedId, windowId, options, contextMenu, options.useHybridComposition ? null : plugin.flutterView, userScripts);
+        webView = new InAppWebView(context, plugin, channel, persistedId, windowId, options, contextMenu, options.useHybridComposition ? null : plugin.flutterView, userScripts);
         displayListenerProxy.onPostWebViewInitialization(displayManager);
 
         if (options.useHybridComposition) { 
