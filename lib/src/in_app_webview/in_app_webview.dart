@@ -412,6 +412,9 @@ class _InAppWebViewState extends State<InAppWebView> {
   @override
   dispose() {
     super.dispose();
+    _androidViewController?.setSize(Size.zero);
+    _androidViewController?.clearFocus();
+    _androidViewController?.dispose();
     _lifecycleListener.dispose();
     _channel.invokeMethod('persistedDispose');
   }
