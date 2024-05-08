@@ -246,7 +246,6 @@ public class FlutterWebView implements PlatformWebView {
     @Override
     public void dispose() {
         
-        persistedDispose(Integer persistedId);
     }
 
     // @Override
