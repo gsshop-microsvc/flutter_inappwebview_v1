@@ -237,6 +237,15 @@ public class FlutterWebView implements PlatformWebView {
                         pullToRefreshLayout.dispose();
 //                        pullToRefreshLayout = null;
                     }
+
+                    WebViewManager.persistedWebViewMap.put(persistedId, null);
+                    WebViewManager.persistedWebViewInitialLoadedMap.put(persistedId, false);
+                    WebViewManager.persistedMethodChannel.put(persistedId, null);
+                    WebViewManager.persistedSubMethodChannel.put(persistedId, null);
+                    
+                    System.out.println("[keykat] persistedDispose: " + persistedId);
+                    
+                    persistedId = null;
                 }
             });
             WebSettings settings = webView.getSettings();
