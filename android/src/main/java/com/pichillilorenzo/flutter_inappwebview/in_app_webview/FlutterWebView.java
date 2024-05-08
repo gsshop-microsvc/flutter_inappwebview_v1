@@ -54,6 +54,8 @@ public class FlutterWebView implements PlatformWebView {
     Integer persistedId;
     public PullToRefreshLayout pullToRefreshLayout;
 
+    String webViewState;
+
 
     public FlutterWebView(final InAppWebViewFlutterPlugin plugin, final Context context, Object id,
                           HashMap<String, Object> params) {
@@ -119,7 +121,16 @@ public class FlutterWebView implements PlatformWebView {
                     } catch (Exception e) {
                         result.error("11486", e.toString(), e.getMessage());
                     }
-                }
+                } 
+                // else if (call.method.equals("webViewState")) {
+                //     try {
+                //         webViewState = (String) call.argument("webViewState");
+                //         result.success(true);
+
+                //     } catch (Exception e) {
+                //         result.error("11234", e.toString(), e.getMessage());
+                //     }
+                // }
             }
         });
 
@@ -245,7 +256,7 @@ public class FlutterWebView implements PlatformWebView {
 
     @Override
     public void dispose() {
-        
+        System.out.println("[keykat] dispose::" + persistedId);
     }
 
     // @Override
