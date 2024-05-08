@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
@@ -413,7 +414,12 @@ class _InAppWebViewState extends State<InAppWebView> {
   dispose() {
     super.dispose();
     _lifecycleListener.dispose();
-    _channel.invokeMethod('persistedDispose');
+    if (Platform.isAndroid) {
+      _androidViewController?.setSize(Size.zero);
+      _androidViewController?.clearFocus();
+      _androidViewController?.dispose();
+      _channel.invokeMethod('persistedDispose');
+    }
   }
 
   @override
