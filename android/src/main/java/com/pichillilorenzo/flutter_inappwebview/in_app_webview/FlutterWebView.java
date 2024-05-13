@@ -162,6 +162,15 @@ public class FlutterWebView implements PlatformWebView {
         final String initialFile = (String) params.get("initialFile");
         final Map<String, String> initialData = (Map<String, String>) params.get("initialData");
 
+        if (initialUrlRequest != null) {
+            String uri = initialUrlRequest.get("url");
+            if (uri != null) {
+                if (uri.toString().contains("/app/script/search/searchSect.gs")) {
+                    webView.setInitialScale(1);
+                }
+            }
+        }
+
         if (windowId != null) {
             Message resultMsg = InAppWebViewChromeClient.windowWebViewMessages.get(windowId);
             if (resultMsg != null) {
