@@ -171,10 +171,13 @@ public class FlutterWebView implements PlatformWebView {
                     if (uri.toString().contains("/app/script/search/searchSect.gs")) {
                         System.out.println("[keykat] searchSect webview");
                         webView.setInitialScale(1);
+                        webView.setBackgroundColor(Color.TRANSPARENT);
+                        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
                     }
                 }
             } catch (Exception e) {
-
+                System.out.print("[keykat] exception ");
+                System.out.println(e);
             }
         }
 
