@@ -165,8 +165,11 @@ public class FlutterWebView implements PlatformWebView {
         if (initialUrlRequest != null) {
             try {
                 String uri = (String) initialUrlRequest.get("url");
+                System.out.println("[keykat] url is :: " + uri);
                 if (uri != null) {
+                    System.out.println("[keykat] webview uri not null");
                     if (uri.toString().contains("/app/script/search/searchSect.gs")) {
+                        System.out.println("[keykat] searchSect webview");
                         webView.setInitialScale(1);
                     }
                 }
